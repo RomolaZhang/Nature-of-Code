@@ -10,7 +10,10 @@ class Particle {
     this.a = 100;
     
     this.reachBottom = false;
-
+    
+    // this.lifespan = 1.0;
+    // this.lifeDecrease = 0.1;
+    
     this.isDead = false;
 
   }

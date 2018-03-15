@@ -19,8 +19,8 @@ class ParticleCenter {
     if(this.pos.y>=0){
       this.pos.y = 0;
       this.vel.y *= -0.7;
-      this.vel.x *= 0.92;
-      this.vel.z *= 0.92;
+      this.vel.x *= 0.9;
+      this.vel.z *= 0.9;
     }
   }
 

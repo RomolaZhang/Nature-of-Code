@@ -9,11 +9,10 @@ class ParticleWave {
     this.mass = 0.5;
     this.rad = this.mass*1.5;
     this.a = 100;
-    this.isDead = false;
   }
  
   updateLife(){
-    if(this.pos.y>0){
+    if(this.pos.y>=0){
       this.pos.y = 0;
       this.isDead = true;
      }

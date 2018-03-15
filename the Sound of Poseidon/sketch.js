@@ -26,33 +26,32 @@ var intervalSmall = 30;
 var ampli, frequ;
 var song, analyzer, fft, spe;
 
-//input
-var mic;
-
 
 //gui
-// var param = {
-//   debugMode: false,
-//   upState: false,
-//   swayState: false,
-//   waveState: false,
-//   centerState: false,
-//   spinState: false,
-//   smallState: false,
-//   playRate: 1,
-//   pause: false,
-// };
+var param = {
+  debugMode: false,
+  upState: false,
+  swayState: false,
+  waveState: false,
+  centerState: false,
+  spinState: false,
+  smallState: false,
+  tone: 0,
+  playRate: 1,
+  pause: false,
+};
 
-// var gui = new dat.gui.GUI();
-// gui.add(param, "debugMode")
-// gui.add(param, "upState");
-// gui.add(param, "swayState");
-// gui.add(param, "waveState");
-// gui.add(param, "centerState");
-// gui.add(param, "spinState");
-// gui.add(param, "smallState");
-// gui.add(param, 'playRate', 1, 8, 0.1);
-// gui.add(param, 'pause');
+var gui = new dat.gui.GUI();
+gui.add(param, "debugMode")
+gui.add(param, "upState");
+gui.add(param, "swayState");
+gui.add(param, "waveState");
+gui.add(param, "centerState");
+gui.add(param, "spinState");
+gui.add(param, "smallState");
+gui.add(param, 'tone', 0, 1, 0.1);
+gui.add(param, 'playRate', 1, 8, 0.1);
+gui.add(param, 'pause');
 
 
 //preload song
@@ -62,164 +61,138 @@ function preload() {
 }
 
 function setup() {
-
   createCanvas(windowWidth, windowHeight, WEBGL);
   song.play();
   //get the amplitude of the song
   analyzer = new p5.Amplitude();
   analyzer.setInput(song);
-  mic = new p5.AudioIn();
-  mic.start();
-  fullscreen();
-}
-
-function keyPressed() {
-  if (key == "R") {
-    mic = new p5.AudioIn();
-    mic.start();
-  }
 }
 
 function draw() {
-  
-  if(frameCount % 1000 == 0){
-    mic = new p5.AudioIn();
-    mic.start();
-    print("work!");
-  }
-
-  micLevel = mic.getLevel();
-  if (song.isPlaying() == false) {
-    song.play();
-  }
   background(0);
   //get current playtime
   time = song.currentTime();
-  //song.rate(param.playRate);
+  song.rate(param.playRate);
 
-  // if (param.debugMode == false) {
-  if (time < 188.3 || time > 151.5) {
-    rotateY(frameCount * 0.003);
+  if (param.debugMode == false) {
+    if (time < 188.3 || time > 151.5) {
+      rotateY(frameCount * 0.003);
+    }
   }
-  //}
 
   //make the song pausable 
-  // if (song.isPlaying()) {
-  //   if (param.pause) {
-  //     song.pause();
-  //   }
-  // }
-  // if (song.isPaused()) {
-  //   if (param.pause == false) {
-  //     song.play();
-  //   }
-  // }
+  if (song.isPlaying()) {
+    if (param.pause) {
+      song.pause();
+    }
+  }
+  if (song.isPaused()) {
+    if (param.pause == false) {
+      song.play();
+    }
+  }
 
   //get amplitude
-  ampli = 12 * analyzer.getLevel();
+  ampli = 10 * analyzer.getLevel();
 
   //create different kinds of fountains according to playtime
-  //if (param.debugMode == false) {
-  if (time > 8.3 && time < 57.5 || time > 63 && time < 97 || time > 101 && time < 116 || time > 156 && time < 189.5) {
-    createSway();
+  if (param.debugMode == false) {
+    if (time > 8.3 && time < 57.5 || time > 63 && time < 97 || time > 101 && time < 116 || time > 152 && time < 189.5 || time > 193.5 && time < 210) {
+      createSway();
+    }
+
+    if (time > 25.5 && time < 57.5) {
+      wave();
+    }
+
+    if (!(time > 62.5 && time < 65 || time > 70 && time < 73 || time > 78.5 && time < 81.5 || time > 87.5 && time < 90 || time > 116 && time < 157 || time > 164 && time < 166 || time > 172 && time < 174 || time > 180.5 && time < 182.5)) {
+      createUp();
+    }
+
+    if (time > 118.3 && time < 150) {
+      createSpin();
+    }
+
+    if (time > 118.3 && time < 152) {
+      createSmall();
+    }
+
+    for (var i = 62.7; i < 64; i += 0.6) {
+      if (time > i && time < (i + 0.2)) {
+        createCenter();
+      }
+    }
+
+    for (var i = 71; i < 72.5; i += 0.6) {
+      if (time > i && time < (i + 0.2)) {
+        createCenter();
+      }
+    }
+
+    for (var i = 80; i < 81.5; i += 0.6) {
+      if (time > i && time < (i + 0.2)) {
+        createCenter();
+      }
+    }
+
+    for (var i = 88; i < 89.5; i += 0.6) {
+      if (time > i && time < (i + 0.2)) {
+        createCenter();
+      }
+    }
+
+    for (var i = 155.5; i < 157; i += 0.6) {
+      if (time > i && time < (i + 0.2)) {
+        createCenter();
+      }
+    }
+
+    for (var i = 155.5; i < 157; i += 0.6) {
+      if (time > i && time < (i + 0.2)) {
+        createCenter();
+      }
+    }
+
+    for (var i = 164; i < 165.5; i += 0.6) {
+      if (time > i && time < (i + 0.2)) {
+        createCenter();
+      }
+    }
+
+    for (var i = 172.5; i < 174; i += 0.6) {
+      if (time > i && time < (i + 0.2)) {
+        createCenter();
+      }
+    }
+
+    for (var i = 181; i < 182.5; i += 0.6) {
+      if (time > i && time < (i + 0.2)) {
+        createCenter();
+      }
+    }
   }
-
-  if ((time < 57.5 || time > 95 && time < 117) && micLevel > 0.2) {
-    wave();
-  }
-
-  if (!(time > 62.5 && time < 65 || time > 70 && time < 73 || time > 78.5 && time < 81.5 || time > 87.5 && time < 90 || time > 116 && time < 156 || time > 189.5)) {
-    createUp();
-  }
-
-  if (time > 118.3 && time < 155 || time > 189.5) {
-    createSpin();
-  }
-
-  if (time > 118.3 && time < 155 || time > 189.5) {
-    createSmall();
-  }
-
-  if ((time > 62 && time < 93 || time > 156 && time < 183) && micLevel > 0.2) {
-    createCenter();
-  }
-
-  // for (var i = 62.7; i < 64; i += 0.6) {
-  //   if (time > i && time < (i + 0.2)) {
-  //     createCenter();
-  //   }
-  // }
-
-  // for (var i = 71; i < 72.5; i += 0.6) {
-  //   if (time > i && time < (i + 0.2)) {
-  //     createCenter();
-  //   }
-  // }
-
-  // for (var i = 80; i < 81.5; i += 0.6) {
-  //   if (time > i && time < (i + 0.2)) {
-  //     createCenter();
-  //   }
-  // }
-
-  // for (var i = 88; i < 89.5; i += 0.6) {
-  //   if (time > i && time < (i + 0.2)) {
-  //     createCenter();
-  //   }
-  // }
-
-  // for (var i = 155.5; i < 157; i += 0.6) {
-  //   if (time > i && time < (i + 0.2)) {
-  //     createCenter();
-  //   }
-  // }
-
-  // for (var i = 155.5; i < 157; i += 0.6) {
-  //   if (time > i && time < (i + 0.2)) {
-  //     createCenter();
-  //   }
-  // }
-
-  // for (var i = 164; i < 165.5; i += 0.6) {
-  //   if (time > i && time < (i + 0.2)) {
-  //     createCenter();
-  //   }
-  // }
-
-  // for (var i = 172.5; i < 174; i += 0.6) {
-  //   if (time > i && time < (i + 0.2)) {
-  //     createCenter();
-  //   }
-  // }
-
-  // for (var i = 181; i < 182.5; i += 0.6) {
-  //   if (time > i && time < (i + 0.2)) {
-  //     createCenter();
-  //   }
-  // }
-  //}
 
   //create different kinds of fountains according to gui
-  // if (param.debugMode == true) {
-  //   if (param.upState == true) {
-  //     createUp();
-  //   }
-  //   if (param.swayState == true) {
-  //     createSway();
-  //   }
-  //   if (param.centerState == true) {
-  //     createCenter();
-  //   }
-  //   if (param.waveState == true) {
-  //     wave();
-  //   }
-  //   if (param.spinState == true) {
-  //     createSpin();
-  //   }
-  //   if (param.smallState == true) {
-  //     createSmall();
-  //   }
-  // }
+  if(param.debugMode == true){
+  if (param.upState == true) {
+    createUp();
+  }
+  if (param.swayState == true) {
+    createSway();
+  }
+  if (param.centerState == true) {
+    createCenter();
+  }
+  if (param.waveState == true) {
+    wave();
+  }
+  if (param.spinState == true) {
+    createSpin();
+  }
+  if (param.smallState == true) {
+    createSmall();
+  }
+  }
 
   //draw these fountain particles
   up();
@@ -233,8 +206,10 @@ function draw() {
 
 //create wave fountains
 function wave() {
-
   for (var angle = 0; angle < range; angle += intervalWave) {
+    if (time > 27) {
+      particlesWave.splice(particles.length - 1, 1);
+    }
     var r = 350;
     push();
     translate(r * sin(radians(angle)), FLOOR_LEVEL, r * cos(radians(angle)));
@@ -245,7 +220,6 @@ function wave() {
 
 //run wave fountains on the left side
 function left() {
-  var count = 0;
   for (var i = 0; i < range / intervalWave; i++) {
     for (var a = i; a < particlesWave.length; a += range / intervalWave) {
       var r = 350;
@@ -254,27 +228,24 @@ function left() {
       translate(r * sin(radians(i * intervalWave)), FLOOR_LEVEL, r * cos(radians(i * intervalWave)))
       var p = particlesWave[a];
 
-      var gravity = createVector(0, 1 - micLevel * 1.5, 0);
-      if (p.isDead == false) {
-        gravity.mult(p.mass);
-        p.display();
-        p.update();
-        p.applyForce(gravity);
-        p.updateLife();
-      } else {
-        count = count + 1;
+      var gravity = createVector(0, 1, 0);
+      gravity.mult(p.mass);
+      p.display();
+      p.update();
+      p.applyForce(gravity);
+      p.updateLife();
+
+      if (p.isDead) {
+        particlesWave[a] = new Test();
       }
+
       pop();
     }
-  }
-  if (count == particlesWave.length) {
-    particlesWave.splice(0, particlesWave.length);
   }
 }
 
 //run wave fountains on the right side
 function right() {
-  // print(particlesWave.length);
   for (var i = 180 / intervalWave; i < 2 * range / intervalWave + (180 - range) / intervalWave; i++) {
     for (var a = i; a < particlesWave.length; a += 120 / intervalWave) {
       fill(sin(time) * 50 + 200, cos(time) * 50 + 200, 200);
@@ -282,14 +253,17 @@ function right() {
       push();
       translate(r * sin(radians(i * intervalWave)), FLOOR_LEVEL, r * cos(radians(i * intervalWave)))
       var p = particlesWave[a];
-      var gravity = createVector(0, 1 - micLevel * 1.5, 0);
-      if (p.isDead == false) {
-        gravity.mult(p.mass);
-        p.display();
-        p.update();
-        p.applyForce(gravity);
-        p.updateLife();
+      var gravity = createVector(0, 1, 0);
+      gravity.mult(p.mass);
+      p.display();
+      p.update();
+      p.applyForce(gravity);
+      p.updateLife();
+
+      if (p.isDead) {
+        particlesWave[a] = new Test();
       }
+
       pop();
     }
   }
@@ -310,7 +284,6 @@ function createUp() {
 
 //run fountains that go up
 function up() {
-
   for (var i = 0; i < 360 / interval; i++) {
     for (var a = i; a < particles.length; a += 360 / interval) {
       var r = 100;
@@ -318,9 +291,9 @@ function up() {
       push();
       translate(r * sin(radians(i * interval)), FLOOR_LEVEL, r * cos(radians(i * interval)))
       var p = particles[a];
-      var gravity = createVector(0, 1.1, 0);
+      var gravity = createVector(0, 1, 0);
       gravity.mult(p.mass);
-      fill(500 * micLevel - p.pos.y * 0.5, 100 - p.pos.y * 0.4, 255);
+      fill(param.tone * 150 - p.pos.y * 0.5, 100 - p.pos.y * 0.4, 255);
       p.checkBoundary();
       p.update();
       p.applyForce(gravity);
@@ -365,7 +338,7 @@ function sway() {
       var p = particlesSway[a];
       var gravity = createVector(0, 1, 0);
       gravity.mult(p.mass);
-      fill((50 + micLevel * 500) * p.lifespan, (200 + micLevel * 500) * p.lifespan, (200 - micLevel * 500) * p.lifespan);
+      fill((50 + param.tone * 200) * p.lifespan, (200 + param.tone * 50) * p.lifespan, (200 - param.tone * 100) * p.lifespan);
       p.checkBoundary();
       p.update();
       p.applyForce(gravity);
@@ -396,7 +369,7 @@ function center() {
     push();
     translate(0, FLOOR_LEVEL, 0);
     var p = particlesCenter[i];
-    var gravity = createVector(0, 5, 0);
+    var gravity = createVector(0, 3, 0);
     gravity.mult(p.mass);
     p.checkBoundary();
     p.update();
@@ -428,7 +401,7 @@ function spin() {
     push();
     translate(0, FLOOR_LEVEL, 0);
     var p = particlesSpin[i];
-    var gravity = createVector(0, 2.2 - micLevel * 5, 0);
+    var gravity = createVector(0, 2, 0);
     fill((sin(frameCount * 0.05 + 3) * 50 + 200) * p.lifespan, (sin(frameCount * 0.05) * 50 + 200) * p.lifespan, (cos(frameCount * 0.05) * 50 + 200) * p.lifespan);
     gravity.mult(p.mass);
     p.update();
@@ -465,7 +438,7 @@ function small() {
         translate(r * sin(radians(angle)), FLOOR_LEVEL, r * cos(radians(angle)));
         var pIndex = (angle / intervalSmall) * 5 + ((radius / intervalSmall) - 1) + multiples * 180;
         var p = particlesSmall[pIndex];
-        var gravity = createVector(0, 1.2 - micLevel * 0.8, 0);
+        var gravity = createVector(0, 1, 0);
         gravity.mult(p.mass);
         p.update();
         p.checkBoundary();

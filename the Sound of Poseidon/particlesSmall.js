@@ -15,7 +15,7 @@ class ParticleSmall {
 
   checkBoundary() {
     
-    if (this.pos.y >= 0) {
+    if (this.pos.y == 0) {
       this.pos.y = 0;
       this.reachBottom = true;
     }
