@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vanish</title>
+	<link rel="stylesheet" type="text/css" href="style2.css">
+	<link href="https://fonts.googleapis.com/css?family=Crimson+Text|Goudy+Bookletter+1911|Libre+Baskerville" rel="stylesheet">
+	<script src="libraries/p5.js" type="text/javascript"></script>
+    <script src="libraries/p5.dom.js" type="text/javascript"></script>
+    <script src="libraries/p5.sound.js" type="text/javascript"></script>
+    <script src="sketch2.js" type="text/javascript"></script>
+    <script src="snow.js" type="text/javascript"></script>
+    <script src="blob.js" type="text/javascript"></script>
+    <script src="circle.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    	window.sun = false;
+    	window.moon = false;
+    	window.star = false;
+    	window.sea = false;
+    	window.mountain = false;
+    	window.forest = false;
+    	window.bird = false;
+    	window.snow = false;
+    	window.flower = false;
+    	window.vanishnow = false;
+    </script>
+</head>
+<body>
+   <img id = "character" src = "character.png" />
+   <div id = "up" class = "container">
+	   <span class = "option" onclick = "sunf()">the Sunset</span> /
+	   <span class = "option" onclick = "moonf()">the Moon</span> /
+	   <span class = "option" onclick = "starf()">the Stars</span>
+   </div>
+   <div id = "left" class = "container">
+     <span class = "option" onclick = "seaf()">the Sea</span> /
+	   <span class = "option" onclick = "mountainf()">the Mountains</span> /
+	   <span class = "option" onclick = "forestf()">the Forest</span>
+   </div>
+   <div id = "right" class = "container">
+     <span class = "option" onclick = "birdf()">the Birds</span> /
+	   <span class = "option" onclick = "snowf()">the Snow</span> /
+	   <span class = "option" onclick = "flowerf()">the Flowers</span>
+   </div>
+   <div id = "complete" onclick = "complete()" class = "container option">Complete</div>
+   <script src = "script.js" type="text/javascript"></script>
+</body>
+<style>
+  body{
+    background-color: rgb(230,230,230);
+  }
+  #p5_loading{
+    display: none !important;
+  }
+</style>
+</html>
